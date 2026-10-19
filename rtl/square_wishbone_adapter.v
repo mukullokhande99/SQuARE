@@ -8,20 +8,22 @@ module square_wishbone_adapter (
  output wire [31:0] dat_o,
  output wire ack_o
 );
- reg pending, request_pulse, ack_reg, we_hold;
+ reg pending, wait_release, request_pulse, ack_reg, we_hold;
  reg [7:0] addr_hold;
  reg [31:0] data_hold, read_reg;
  wire peripheral_ack;
  wire [31:0] peripheral_data;
  always @(posedge clk or posedge rst) begin
   if (rst) begin
-   pending<=0; request_pulse<=0; ack_reg<=0;
+   pending<=0; wait_release<=0; request_pulse<=0; ack_reg<=0;
    we_hold<=0; addr_hold<=0; data_hold<=0; read_reg<=0;
   end else begin
    request_pulse<=0;
    ack_reg<=0;
-   if (!pending && cyc_i && stb_i) begin
+   if (!cyc_i || !stb_i) wait_release<=0;
+   if (!pending && !wait_release && cyc_i && stb_i) begin
     pending<=1;
+    wait_release<=1;
     request_pulse<=1;
     addr_hold<=adr_i[7:0];
     data_hold<=dat_i;
