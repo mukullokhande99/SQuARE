@@ -59,3 +59,27 @@ Accelerator access control belongs at the CPU/peripheral boundary. Authenticatio
 The complete integrated RTL source package contains `rtl/compute`, `rtl/optimized`, `rtl/soc_legacy`, the `square_mac_peripheral` module, reference testbenches and arithmetic golden vectors. Verification includes format decoding, numerical accumulation, overflow/cancellation, clear/issue sequencing, interface readback and device-specific hardware synthesis.
 
 This repository documents the programmable arithmetic and integration interfaces of the SQuARE design.
+
+## Precision-specialized CNN and systolic architectures
+
+SQuARE includes an output-stationary systolic array and drop-in convolution PE
+implementations with six fixed-format profiles: Posit(4,1), FP4 E2M1, FP2 E1M0,
+FP2 E0M1, dual-lane FP2 E1M0, and dual-lane FP2 E0M1. Numeric products
+use Q8.8 scaling; dual FP2 lanes sum before saturating accumulation.
+
+The parameterized processing elements and arrays are in
+[`rtl/cnn_transprecision/`](rtl/cnn_transprecision/). The precision-selectable
+convolution overlays for MNIST and CIFAR-10 are in the
+[`overlays/`](rtl/cnn_transprecision/overlays/) subdirectory.
+
+**Operand encoding:** FPGA memories feeding these low-precision PEs must contain
+the corresponding FP4, Posit4, or FP2 codes. Signed INT8 memory contents must be
+converted/requantized before use. Details of operand packing, systolic input
+skew, accumulator semantics, and layer integration are specified in
+[`SQUARE_CNN_TRANSPRECISION.md`](docs/SQUARE_CNN_TRANSPRECISION.md).
+
+```bash
+python tests/cnn_transprecision/check_arithmetic.py
+python tests/cnn_transprecision/check_structure.py
+bash scripts/run_square_cnn_tests.sh  # requires iverilog and vvp
+```
