@@ -113,8 +113,7 @@ and authentication control plane are unchanged by PE selection.
 
 ## Numeric scaling and accumulator behavior
 
-All primitive products use the fixed global **Q8.8** scale (1 bit of value
-corresponds to a 256 count). The parallel CNN PE exposes 32-bit Q8.8 products,
+All primitive products use the fixed global **Q8.8** scale (a numeric value of 1.0 corresponds to 256 integer counts). The parallel CNN PE exposes 32-bit Q8.8 products,
 while the systolic PE accumulates those products into `ACC_W` bits. DP2 sums
 its two products **before** accumulator saturation. Posit4 maximum finite
 magnitude is 16; a 16x16 product requires 65536 raw Q8.8 counts, so 16-bit
