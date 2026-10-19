@@ -1,5 +1,7 @@
 # SQuARE — Sub-Quad-Precision Neural Acceleration in a RISC-V Edge-AI SoC
 
+**Manuscript status:** *SQuARE — Sub-Quad-Precision Neural Acceleration in a RISC-V Edge-AI SoC* is under review in the **Journal of Systems Architecture**.
+
 SQuARE integrates a RISC-V SoC control plane, CNN inference pipeline, and a programmable mixed-format arithmetic fabric for resource-constrained edge intelligence.
 
 ## System architecture
