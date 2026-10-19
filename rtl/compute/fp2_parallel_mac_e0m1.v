@@ -1,0 +1,20 @@
+// FP2-E0M1 wrapper with fmt_sel hardwired to 1.
+module fp2_parallel_mac_e0m1 #(
+ parameter ACC_W=16, parameter FRAC_W=5
+)(
+ input wire clk,rst_n,clear_acc,valid_in,
+ input wire [FRAC_W-1:0] frac_bits,
+ input wire [1:0] a0,a1,w0,w1,
+ input wire a0_zero,a1_zero,w0_zero,w1_zero,
+ output wire signed [ACC_W-1:0] acc,
+ output wire valid_out,overflow,
+ output wire signed [7:0] acc_fxp8
+);
+ fp2_parallel_mac_ref #(.ACC_W(ACC_W),.FRAC_W(FRAC_W)) u_core (
+ .clk(clk),.rst_n(rst_n),.clear_acc(clear_acc),.valid_in(valid_in),
+ .fmt_sel(1'b1),.frac_bits(frac_bits),
+ .a0(a0),.a1(a1),.w0(w0),.w1(w1),
+ .a0_zero(a0_zero),.a1_zero(a1_zero),.w0_zero(w0_zero),.w1_zero(w1_zero),
+ .acc(acc),.valid_out(valid_out),.overflow(overflow),.acc_fxp8(acc_fxp8)
+ );
+endmodule
