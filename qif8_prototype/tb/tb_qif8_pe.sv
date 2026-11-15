@@ -1,4 +1,4 @@
-\`timescale 1ns/1ps
+`timescale 1ns/1ps
 module tb_qif8_pe;
     logic clk=0; always #5 clk=~clk;
     logic rst_n=0,syn_valid=0,fire_valid=0;
