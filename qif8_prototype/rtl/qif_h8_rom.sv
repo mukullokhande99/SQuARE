@@ -3,7 +3,7 @@
 // Phase: 8-bit circular phase; one free-running period = 256 integer time ticks.
 // Combinational memory read is a baseline, not optimized FPGA BRAM.
 module qif_h8_rom #(
-    parameter ROM_FILE = "qif8_prototype/rtl/qif_h8.mem"
+    parameter ROM_FILE = "rtl/qif_h8.mem"
 ) (
     input  logic [7:0] phase_in,
     input  logic signed [7:0] weight_in,
