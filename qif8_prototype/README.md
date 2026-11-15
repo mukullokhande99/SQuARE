@@ -5,12 +5,12 @@
 This module implements one event-driven QIF neuron PE and an 8-bit nonlinear phase-transition lookup from Wan et al., *From LIF to QIF: Toward Differentiable Spiking Neurons for Scientific Machine Learning*, arXiv:2511.06614v1, Eq. (6)–(10). This is **not** the piecewise-linear IQIF (2021) neuron.
 
 ## Contents
-- \`rtl/qif_h8_rom.sv\`: 8-bit input phase × signed 8-bit weight lookup, 8-bit phase output
-- \`rtl/qif8_pe.sv\`: single-neuron synaptic and autonomous firing event state machine
-- \`tools/generate_rom.py\`: deterministic ROM generator (65536 entries)
-- \`tools/check_model.py\`: functional reference and exhaustive ROM check
-- \`tb/tb_qif8_pe.sv\`: simulation testbench
-- \`Makefile\`: local build targets
+- `rtl/qif_h8_rom.sv`: 8-bit input phase × signed 8-bit weight lookup, 8-bit phase output
+- `rtl/qif8_pe.sv`: single-neuron synaptic and autonomous firing event state machine
+- `tools/generate_rom.py`: deterministic ROM generator (65536 entries)
+- `tools/check_model.py`: functional reference and exhaustive ROM check
+- `tb/tb_qif8_pe.sv`: simulation testbench
+- `Makefile`: local build targets
 
 ## Numerical formats
 - Circular phase: unsigned 8-bit bin index (0–255).
@@ -23,23 +23,17 @@ This module implements one event-driven QIF neuron PE and an 8-bit nonlinear pha
 
 ## Running from this subdirectory
 
-\`\`\`bash
+```bash
 make check
 make sim  # requires iverilog and vvp
-\`\`\`
+```
 
-The generated \`rtl/qif_h8.mem\` is intentionally **not tracked**. Run \`make rom\` before using the ROM. The default ROM_FILE parameter resolves relative to the **repository root**; if running simulation from this subdirectory, edit \`ROM_FILE\` to \`rtl/qif_h8.mem\` or compile with root as the working directory, for example:
-
-\`\`\`bash
-make -C qif8_prototype rom
-iverilog -g2012 -s tb_qif8_pe -o /tmp/tb_qif8.vvp qif8_prototype/rtl/qif_h8_rom.sv qif8_prototype/rtl/qif8_pe.sv qif8_prototype/tb/tb_qif8_pe.sv
-vvp /tmp/tb_qif8.vvp
-\`\`\`
+The generated `rtl/qif_h8.mem` is intentionally **not tracked**. Run `make rom` before using the ROM. The ROM filename resolves relative to the working directory; run `make` from inside `qif8_prototype/` as shown above.
 
 ## Execution contract
 A network scheduler must process a predicted firing before a later synaptic input. The PE accepts one event per clock:
-1. \`syn_valid\` at time \`syn_time\` strictly before \`next_spike_time\` advances phase and applies \`H_w\`.
-2. \`fire_valid\` at exactly \`next_spike_time\` emits a spike and schedules the next autonomous firing.
+1. `syn_valid` at time `syn_time` strictly before `next_spike_time` advances phase and applies `H_w`.
+2. `fire_valid` at exactly `next_spike_time` emits a spike and schedules the next autonomous firing.
 
 Re-scheduling, fanout, coincident spikes, and event invalidation are not handled by this single-neuron PE.
 
