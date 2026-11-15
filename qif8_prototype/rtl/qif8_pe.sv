@@ -3,7 +3,7 @@
 // later synaptic event. One transaction per clock; no network scheduler here.
 module qif8_pe #(
     parameter integer TIME_W = 24,
-    parameter ROM_FILE = "qif8_prototype/rtl/qif_h8.mem"
+    parameter ROM_FILE = "rtl/qif_h8.mem"
 ) (
     input logic clk, rst_n,
     input logic syn_valid,
